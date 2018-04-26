@@ -15,6 +15,7 @@
 
     greetButVeryLoud('John') // HELLO JOHN!!!!!!!!1111one
 */
+const compose = require('../src/problem2');
 
 describe('problem2 - compose', () => {
     function stringToNumber(s) {
