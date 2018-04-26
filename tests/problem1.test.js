@@ -8,6 +8,7 @@
     groupBy([1,2,3,4,5], elem => elem % 2) === { '1': [1,3,5], '0': [2,4] }
 
 */
+const groupBy = require('../src/problem1');
 
 describe('problem1 - groupBy', () => {
     it('returns an object', () => {
