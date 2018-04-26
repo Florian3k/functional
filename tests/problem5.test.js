@@ -26,6 +26,25 @@
             finally<U>?(handler: (value: T) => U): U;
         }
 */
+class Pipe {
+    constructor(val) {
+        this.val = val;
+    }
+    static startingWith(value) {
+        return new Pipe(value);
+    }
+    chain(mapFunc) {
+        this.val = mapFunc(this.val);
+        return this;
+    }
+    return() {
+        return this.val;
+    }
+    finally(mapFunc) {
+        this.chain(mapFunc);
+        return this.return();
+    }
+}
 
 describe('problem5 - pipe', () => {
     it('returns a wrapped value (an object)', () => {
