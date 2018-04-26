@@ -27,6 +27,7 @@
         curriedFunc(1)(2)(3)(4) // zwraca 10
 
 */
+const curry = require('../src/problem3');
 
 describe('problem3 - curry', () => {
     it("returns the same func if it doesn't require any parameters", () => {
