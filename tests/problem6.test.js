@@ -15,6 +15,32 @@
         }
 */
 
+class LazyPipe {
+    constructor(val) {
+        this.val = val;
+        this.funcs = [];
+    }
+    static startingWith(value) {
+        return new LazyPipe(value);
+    }
+    chain(mapFunc) {
+        this.funcs.push(mapFunc);
+        return this;
+    }
+    return() {
+        const val = this.funcs.reduce((val, fn) => {
+            if (val instanceof LazyPipe) {
+                val = val.return();
+            }
+            return fn(val);
+        }, this.val);
+        
+        if (val instanceof LazyPipe) {
+            return val.return();
+        }
+        return val;
+    }
+}
 describe('problem6 - LazyPipe', () => {
     it('returns a wrapped value (an object)', () => {
         expect(LazyPipe.startingWith(2)).toBeInstanceOf(LazyPipe);
@@ -98,6 +124,19 @@ describe('problem6 - LazyPipe', () => {
                     .chain(v => v % 3)
                     .chain(number => `The magic number is: ${number}`)
                     .return(),
+            ).toBe('The magic number is: 1');
+        });
+    });
+
+    describe('startingWith()', () => {
+        it('unwraps the value if constructed with LazyPipe', () => {
+            expect(
+                LazyPipe.startingWith(
+                    LazyPipe.startingWith(2)
+                        .chain(v => v + 5)
+                        .chain(v => v % 3)
+                        .chain(number => `The magic number is: ${number}`),
+                ).return()
             ).toBe('The magic number is: 1');
         });
     });
